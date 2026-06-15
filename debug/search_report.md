@@ -1,0 +1,15 @@
+SEARCH_RETURNED = 8
+SIGNAL_SENT = 8
+SIGNAL_RECEIVED = 8
+AFTER_FILTER = 8
+AFTER_TAB_FILTER = 8
+CARDS_CREATED = 8
+CARDS_ADDED_TO_LAYOUT = 8
+VISIBLE_CARDS = 8
+
+Selected Tab: Semua
+Selected Sort: Relevance
+Search Query: noah
+
+ROOT CAUSE:
+Success / No Failure

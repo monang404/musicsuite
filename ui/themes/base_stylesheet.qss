@@ -1,0 +1,8 @@
+QMainWindow {
+    background-color: #1a1917;
+}
+
+QPushButton:focus, QLineEdit:focus, QComboBox:focus {
+    border: 1.5px solid #e8631a;
+    outline: none;
+}

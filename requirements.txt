@@ -1,0 +1,19 @@
+# Music Suite — Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# GUI Framework
+PySide6>=6.6.0
+
+# YouTube downloader & metadata extractor
+yt-dlp>=2024.1.0
+
+# ---------------------------------------------------------------------------
+# System Dependencies (NOT installable via pip — install manually)
+# ---------------------------------------------------------------------------
+# FFmpeg  : https://ffmpeg.org/download.html
+#           Windows: winget install ffmpeg  OR  choco install ffmpeg
+#           macOS  : brew install ffmpeg
+#           Linux  : sudo apt install ffmpeg
+#
+# Python  : 3.11 or newer recommended (developed on 3.13)
+# ---------------------------------------------------------------------------

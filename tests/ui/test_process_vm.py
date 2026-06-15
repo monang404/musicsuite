@@ -116,7 +116,7 @@ def test_start_job_success(mock_makedirs, mock_container):
     assert job.source == source
     assert job.timestamps == "00:00|Intro"
     import os
-    assert job.output_folder == os.path.join("/default", "kompilasi", "Test Compilation")
+    assert job.output_folder == os.path.join("/default", "kompilasi", "Test Album - Full Album")
     assert job.audio_format == "mp3"
     assert job.bitrate == "320k"
     

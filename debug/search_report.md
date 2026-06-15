@@ -7,7 +7,7 @@ CARDS_CREATED = 5
 CARDS_ADDED_TO_LAYOUT = 5
 VISIBLE_CARDS = 5
 
-Selected Tab: Playlist
+Selected Tab: Kompilasi
 Selected Sort: Relevance
 Search Query: ari lasso
 

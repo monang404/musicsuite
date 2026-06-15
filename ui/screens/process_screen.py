@@ -1,3 +1,4 @@
+import logging
 from PySide6.QtWidgets import (
     QVBoxLayout, QHBoxLayout, QLabel,
     QLineEdit, QComboBox, QCheckBox, QPushButton,
@@ -278,7 +279,7 @@ class DownloadConfigDialog(QDialog):
             try:
                 self._fade_anim.finished.disconnect(self._fade_anim_slot)
             except Exception:
-                pass
+                logging.error("Failed to disconnect fade animation", exc_info=True)
         self._fade_anim_slot = callback
         self._fade_anim.finished.connect(self._fade_anim_slot)
         self._fade_anim.start()

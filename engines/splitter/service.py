@@ -1,5 +1,6 @@
 import os
 import shutil
+import logging
 from pathlib import Path
 from typing import Callable, Optional
 
@@ -89,7 +90,7 @@ class SplitterService:
                     try:
                         os.remove(f)
                     except Exception:
-                        pass
+                        logging.warning(f"Failed to remove output file: {f}", exc_info=True)
                 raise SplitError("Split cancelled by user")
 
             # Build output filename using the naming pattern
@@ -102,7 +103,7 @@ class SplitterService:
                 try:
                     filename_without_ext = naming_pattern.format(index=song.index, title=safe_title).strip()
                 except Exception:
-                    pass
+                    logging.warning(f"Failed to apply naming pattern: {naming_pattern}", exc_info=True)
 
             if not filename_without_ext:
                 filename_without_ext = f"{song.index:03d} - {safe_title}"
@@ -128,13 +129,13 @@ class SplitterService:
                     if output_path.exists():
                         os.remove(output_path)
                 except Exception:
-                    pass
+                    logging.warning(f"Failed to remove output file during abort: {output_path}", exc_info=True)
                 # Clean up all previously successfully written files as well on failure
                 for f in output_files:
                     try:
                         os.remove(f)
                     except Exception:
-                        pass
+                        logging.warning(f"Failed to clean up previously written file: {f}", exc_info=True)
                 raise SplitError(str(e))
 
             output_files.append(str(output_path))
@@ -145,7 +146,7 @@ class SplitterService:
                 try:
                     os.remove(f)
                 except Exception:
-                    pass
+                    logging.warning(f"Failed to remove output file during cancellation: {f}", exc_info=True)
             raise SplitError("Split cancelled by user")
 
         self._emit_split_complete(progress_callback, total)

@@ -1,4 +1,5 @@
 from typing import Dict, List, Optional, Any
+import logging
 from ui.workers.base_worker import BaseWorker
 from ui.core.service_container import ServiceContainer
 from engines.search.models.compilation_source import CompilationVideo
@@ -132,7 +133,7 @@ class CompilationInspectorWorker(BaseWorker):
             if ranked_groups and ranked_groups[0].quality_results:
                 return ranked_groups[0].quality_results.get(s.id)
         except Exception:
-            pass
+            logging.error("Failed to calculate confidence score", exc_info=True)
         return None
 
     @staticmethod

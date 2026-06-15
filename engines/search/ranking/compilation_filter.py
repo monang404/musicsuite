@@ -4,7 +4,7 @@ from engines.search.models.compilation_source import CompilationVideo
 from engines.search.ranking.shared_patterns import HARD_EXCLUDE_PATTERNS
 
 SOFT_PENALTIES = {
-    r'\blive\b':         15,
+    r'\blive\b':          5,
     r'\bcover\b':        10,
     r'\bremix\b':        10,
     r'\bslowed\b':       20,

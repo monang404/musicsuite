@@ -88,14 +88,3 @@ class PlaylistFilter:
             pl.soft_penalty = 0
             filtered.append(pl)
         return filtered
-
-    def explain(self, playlists: List[PlaylistSource]) -> List[Tuple[PlaylistSource, str]]:
-        """
-        Returns a list of (playlist, reject_reason) for ALL playlists.
-        Empty string means PASS.
-        """
-        results = []
-        for pl in playlists:
-            reason = _explain_filter_exclusion(pl)
-            results.append((pl, reason))
-        return results

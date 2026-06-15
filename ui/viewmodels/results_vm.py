@@ -32,10 +32,6 @@ class ResultsViewModel(BaseViewModel):
         return self._playlists
 
     @property
-    def selected_source(self) -> Optional[SearchEntity]:
-        return self._selected_source
-
-    @property
     def active_filter(self) -> str:
         return self._active_filter
 

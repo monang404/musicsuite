@@ -65,21 +65,6 @@ class SearchWorker(BaseWorker):
                 
             self.progress.emit("Menyiapkan tampilan hasil pencarian...", 1.0)
             
-            # Inject Debug Reporter
-            from ui.debug_reporter import DebugSearchReporter
-            reporter = DebugSearchReporter()
-            reporter.reset()
-            reporter.search_query = self.query
-            
-            total_returned = 0
-            if "compilations" in final_results and final_results["compilations"]:
-                total_returned += sum(len(g.sources) for g in final_results["compilations"])
-            if "playlists" in final_results and final_results["playlists"]:
-                total_returned += sum(len(g.sources) for g in final_results["playlists"])
-            
-            reporter.search_returned = total_returned
-            reporter.signal_sent = total_returned
-            
             self.completed.emit(final_results)
             
         except Exception as e:

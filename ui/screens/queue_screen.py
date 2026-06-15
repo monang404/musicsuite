@@ -30,24 +30,29 @@ class JobWidget(QWidget):
         # Actions
         if self.job.status in (JobStatus.RUNNING, JobStatus.PENDING):
             btn_pause = QPushButton("Pause")
+            btn_pause.setCursor(Qt.CursorShape.PointingHandCursor)
             btn_pause.clicked.connect(lambda: self.viewmodel.pause_job(self.job.id))
             layout.addWidget(btn_pause)
             
             btn_cancel = QPushButton("Cancel")
+            btn_cancel.setCursor(Qt.CursorShape.PointingHandCursor)
             btn_cancel.clicked.connect(lambda: self.viewmodel.cancel_job(self.job.id))
             layout.addWidget(btn_cancel)
             
         elif self.job.status == JobStatus.PAUSED:
             btn_resume = QPushButton("Resume")
+            btn_resume.setCursor(Qt.CursorShape.PointingHandCursor)
             btn_resume.clicked.connect(lambda: self.viewmodel.resume_job(self.job.id))
             layout.addWidget(btn_resume)
             
             btn_cancel = QPushButton("Cancel")
+            btn_cancel.setCursor(Qt.CursorShape.PointingHandCursor)
             btn_cancel.clicked.connect(lambda: self.viewmodel.cancel_job(self.job.id))
             layout.addWidget(btn_cancel)
             
         elif self.job.status in (JobStatus.FAILED, JobStatus.CANCELLED):
             btn_retry = QPushButton("Retry")
+            btn_retry.setCursor(Qt.CursorShape.PointingHandCursor)
             btn_retry.clicked.connect(lambda: self.viewmodel.retry_job(self.job.id))
             layout.addWidget(btn_retry)
             

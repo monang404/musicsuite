@@ -383,11 +383,6 @@ class ResultsScreen(BaseScreen):
     # ══════════════════════════════════════════════════════════════════
 
     def _on_results_loaded(self):
-        from ui.debug_reporter import DebugSearchReporter
-        reporter = DebugSearchReporter()
-        vm: ResultsViewModel = self.viewmodel
-        total_received = sum(len(g.sources) for g in vm.playlists) + sum(len(g.sources) for g in vm.compilations)
-        reporter.signal_received = total_received
         self._refresh_ui()
 
     def _on_type_filter_changed(self, key: str):
@@ -408,12 +403,6 @@ class ResultsScreen(BaseScreen):
         self._clear(self.results_content_layout)
 
         vm: ResultsViewModel = self.viewmodel
-        
-        from ui.debug_reporter import DebugSearchReporter
-        reporter = DebugSearchReporter()
-        reporter.selected_tab = self._type_filter
-        reporter.selected_sort = vm.active_sort
-        reporter.search_query = self.current_query
 
         # Build flat list  (source, quality, type_str)
         all_items: list[tuple] = []
@@ -429,8 +418,6 @@ class ResultsScreen(BaseScreen):
             all_items = [(s, q, t) for s, q, t in all_items if t == "playlist"]
         elif self._type_filter == FilterChipGroup.FILTER_COMPILATION:
             all_items = [(s, q, t) for s, q, t in all_items if t == "compilation"]
-            
-        reporter.after_tab_filter = len(all_items)
 
         # Text filter
         term = vm.active_filter.lower()
@@ -439,8 +426,6 @@ class ResultsScreen(BaseScreen):
                 (s, q, t) for s, q, t in all_items
                 if term in s.title.lower() or term in s.channel.lower()
             ]
-            
-        reporter.after_filter = len(all_items)
 
         # Sort
         if vm.active_sort == "Durasi":
@@ -474,14 +459,7 @@ class ResultsScreen(BaseScreen):
             else:
                 self._show_empty("Tidak ada hasil ditemukan.")
             self._update_stats([])
-            reporter.cards_created = 0
-            reporter.cards_added_to_layout = 0
-            reporter.visible_cards = 0
-            reporter.write_report()
             return
-
-        reporter.cards_created = len(all_items)
-        cards_added = 0
 
         # Render cards
         for source, quality, type_str in all_items:
@@ -489,11 +467,7 @@ class ResultsScreen(BaseScreen):
             card.clicked.connect(self.viewmodel.select_source)
             card.select_requested.connect(self.viewmodel.select_source)
             self.results_content_layout.addWidget(card)
-            cards_added += 1
 
-        reporter.cards_added_to_layout = cards_added
-        reporter.visible_cards = cards_added
-        reporter.write_report()
         self._update_stats(all_items)
 
     def _update_stats(self, items):

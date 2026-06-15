@@ -63,21 +63,3 @@ class PlaylistDebugReporter:
             lines.append(f"  Artist signals : {r.artist_signals_note}")
         lines.append(sep)
         return "\n".join(lines)
-
-    def format_all(self, reports: List[CandidateReport]) -> str:
-        return "\n".join(self.format_candidate(r) for r in reports)
-
-    def to_markdown_table(self, reports: List[CandidateReport]) -> str:
-        header = (
-            "| Title | Music | Artist | Metadata | Size | Final | Status | Reason |\n"
-            "|-------|-------|--------|----------|------|-------|--------|--------|"
-        )
-        rows = []
-        for r in reports:
-            reason = r.reject_reason or "—"
-            rows.append(
-                f"| {r.title[:45]} | {r.music_score:.2f} | {r.artist_confidence:.2f} "
-                f"| {r.metadata_quality:.2f} | {r.size_score:.2f} | {r.final_score:.2f} "
-                f"| {r.status} | {reason[:40]} |"
-            )
-        return header + "\n" + "\n".join(rows)

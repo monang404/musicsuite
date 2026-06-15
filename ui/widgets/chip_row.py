@@ -178,18 +178,3 @@ class ChipRow(QWidget):
         super().__init__(parent)
         self.layout = FlowLayout(self, margin=0, spacing=8)
         self._chips = []
-
-    def set_suggestions(self, suggestions):
-        self._clear_chips()
-        
-        for text in suggestions:
-            btn = AnimatedChip(text)
-            btn.clicked.connect(lambda checked, t=text: self.chip_clicked.emit(t))
-            self.layout.addWidget(btn)
-            self._chips.append(btn)
-            
-    def _clear_chips(self):
-        for chip in self._chips:
-            self.layout.removeWidget(chip)
-            chip.deleteLater()
-        self._chips.clear()

@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from typing import Callable, Optional, Dict, Any, List, Tuple
 
@@ -100,6 +101,14 @@ class WorkflowService:
             progress_callback=split_progress,
             cancel_check=cancel_check
         )
+        
+        if progress_callback:
+            progress_callback("Membersihkan file cache sementara...")
+            
+        try:
+            Path(audio_path).unlink()
+        except Exception as e:
+            logging.warning(f"Gagal menghapus file sumber {audio_path}: {e}")
         
         if progress_callback:
             progress_callback("Workflow complete.")

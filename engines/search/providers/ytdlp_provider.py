@@ -170,7 +170,7 @@ class YtdlpProvider(BaseProvider):
         ]
         
         try:
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=60, shell=False)
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=35, shell=False)
         except Exception as e:
             logger.exception("Playlist search failed")
             raise

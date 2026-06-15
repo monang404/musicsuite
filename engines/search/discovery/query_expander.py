@@ -5,23 +5,30 @@ QUERY_TEMPLATES = [
     "{artist} full album timestamp",
     "{artist} greatest hits timestamp",
     "{artist} best songs timestamp",
-    "{artist} kompilasi terbaik",
     "{artist} full album tracklist",
-    "{artist} best songs tracklist",
+    "{artist} kompilasi terbaik",
     "{artist} discography",
+    "{artist} greatest hits",
+    "{artist} best songs",
+    "{artist} full album",
+    "{artist} top songs",
+    "{artist} all songs nonstop",
+    "{artist} lagu terbaik",
+    "{artist} best songs tracklist",
     "{artist} live performance",
     "{artist} essential tracks",
-    "{artist} full album",
 ]
 
 PLAYLIST_QUERY_TEMPLATES = [
     "{artist} playlist",
     "{artist} official playlist",
     "{artist} mix",
+    "{artist} songs playlist",
+    "{artist} topic",
 ]
 
 class QueryExpander:
-    def expand(self, artist: str, count: int = 5) -> List[str]:
+    def expand(self, artist: str, count: int = 8) -> List[str]:
         normalized_artist = self._normalize(artist)
         if not normalized_artist:
             return []
@@ -32,7 +39,7 @@ class QueryExpander:
             
         return queries[:count]
 
-    def expand_playlist(self, artist: str, count: int = 7) -> List[str]:
+    def expand_playlist(self, artist: str, count: int = 5) -> List[str]:
         normalized_artist = self._normalize(artist)
         if not normalized_artist:
             return []

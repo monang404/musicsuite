@@ -52,24 +52,27 @@ class SearchEngineService:
             for s in filtered
         }
 
-        # Sort and take top 5
+        # Sort and take top 8 candidates
         filtered_sorted = sorted(filtered, key=lambda s: quality_results[s.id].score, reverse=True)
-        top_candidates = filtered_sorted[:5]
+        top_candidates = filtered_sorted[:8]
 
         # Phase 2: Deep Fetch
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
             future_to_source = {executor.submit(self.provider.fetch_full, s.url): s for s in top_candidates}
-            for future in concurrent.futures.as_completed(future_to_source):
-                original_s = future_to_source[future]
-                try:
-                    full_s = future.result()
-                    full_s.id = original_s.id
-                    
-                    idx = top_candidates.index(original_s)
-                    top_candidates[idx] = full_s
-                    quality_results[full_s.id] = scorer.score_phase2(full_s)
-                except Exception as e:
-                    logging.error("Failed to fetch full source in phase 2", exc_info=True)
+            try:
+                for future in concurrent.futures.as_completed(future_to_source, timeout=45):
+                    original_s = future_to_source[future]
+                    try:
+                        full_s = future.result()
+                        full_s.id = original_s.id
+                        
+                        idx = top_candidates.index(original_s)
+                        top_candidates[idx] = full_s
+                        quality_results[full_s.id] = scorer.score_phase2(full_s)
+                    except Exception as e:
+                        logging.error("Failed to fetch full source in phase 2", exc_info=True)
+            except concurrent.futures.TimeoutError:
+                logging.warning("Phase 2 compilation deep-fetch timed out after 45s")
 
         return self.rank_results(top_candidates, quality_results)
 
@@ -85,19 +88,22 @@ class SearchEngineService:
         quality_results = {p.id: scorer.score_phase1(p) for p in filtered}
 
         filtered_sorted = sorted(filtered, key=lambda p: quality_results[p.id].score, reverse=True)
-        top_candidates = filtered_sorted[:5]
+        top_candidates = filtered_sorted[:6]
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
             future_to_p = {executor.submit(self.provider.fetch_playlist_full, p.url): p for p in top_candidates}
-            for future in concurrent.futures.as_completed(future_to_p):
-                original = future_to_p[future]
-                try:
-                    full = future.result()
-                    full.id = original.id
-                    idx = top_candidates.index(original)
-                    top_candidates[idx] = full
-                except Exception:
-                    logging.error("Failed to fetch full playlist in phase 2", exc_info=True)
+            try:
+                for future in concurrent.futures.as_completed(future_to_p, timeout=45):
+                    original = future_to_p[future]
+                    try:
+                        full = future.result()
+                        full.id = original.id
+                        idx = top_candidates.index(original)
+                        top_candidates[idx] = full
+                    except Exception:
+                        logging.error("Failed to fetch full playlist in phase 2", exc_info=True)
+            except concurrent.futures.TimeoutError:
+                logging.warning("Phase 2 playlist deep-fetch timed out after 45s")
 
         # re-apply filter (item_count < 3 and possible entry-level patterns)
         final_candidates = playlist_filter.apply(top_candidates)

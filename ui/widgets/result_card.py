@@ -202,6 +202,20 @@ class _InfoColumn(QWidget):
         if track_count > 0:
             meta_row.addWidget(m(f"🎵 {track_count} track"))
         meta_row.addWidget(m(f"{type_icon} {type_name}"))
+        
+        # Tahun upload
+        upload_date = getattr(source, 'upload_date', '') or ''
+        if upload_date and len(upload_date) >= 4:
+            year = upload_date[:4]
+            meta_row.addWidget(m(f"📅 {year}"))
+
+        # View count (compilation only)
+        if source_type == "compilation":
+            views = getattr(source, 'view_count', 0) or 0
+            if views > 0:
+                views_str = f"{views/1_000_000:.1f}M" if views >= 1_000_000 else f"{views//1_000}K"
+                meta_row.addWidget(m(f"👁 {views_str}"))
+
         meta_row.addStretch()   # push everything left, prevent rightward overflow
 
         vbox.addLayout(meta_row)
@@ -253,6 +267,17 @@ class _ScoreColumn(QWidget):
         circ = CircularProgress(score_val, size=self.CIRC_SIZE)
         circ.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         vbox.addWidget(circ, 0, Qt.AlignHCenter | Qt.AlignVCenter)
+
+        is_estimate = getattr(quality, 'is_estimate', False) if quality else False
+        if is_estimate:
+            est_lbl = QLabel("estimasi")
+            est_lbl.setAlignment(Qt.AlignCenter)
+            est_lbl.setStyleSheet(f"""
+                font-size: 8px;
+                color: {ThemeManager.get_color('text_muted')};
+                font-style: italic;
+            """)
+            vbox.addWidget(est_lbl, 0, Qt.AlignHCenter)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

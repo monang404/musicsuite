@@ -114,11 +114,6 @@ class ProcessViewModel(BaseViewModel):
         sub = "kompilasi" if entity_type == "compilation" else "playlist"
         return os.path.join(base, sub, title_safe)
 
-    def set_output_folder(self, folder: str):
-        if self._output_folder != folder:
-            self._output_folder = folder
-            self.state_changed.emit()
-
     def set_audio_format(self, fmt: str):
         if self._audio_format != fmt:
             self._audio_format = fmt
@@ -127,11 +122,6 @@ class ProcessViewModel(BaseViewModel):
     def set_bitrate(self, bitrate: str):
         if self._bitrate != bitrate:
             self._bitrate = bitrate
-            self.state_changed.emit()
-
-    def set_naming_pattern(self, pattern: str):
-        if self._naming_pattern != pattern:
-            self._naming_pattern = pattern
             self.state_changed.emit()
 
     def set_export_option(self, key: str, value: bool):

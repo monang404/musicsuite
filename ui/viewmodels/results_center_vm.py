@@ -62,19 +62,6 @@ class ResultsCenterViewModel(BaseViewModel):
         return tracks
 
     @property
-    def output_folders(self) -> List[str]:
-        """Unique output directories derived from exported track paths."""
-        from pathlib import Path
-        seen = set()
-        folders: List[str] = []
-        for track in self.exported_tracks:
-            folder = str(Path(track).parent)
-            if folder not in seen:
-                seen.add(folder)
-                folders.append(folder)
-        return folders
-
-    @property
     def visible_records(self) -> List[Dict[str, Any]]:
         """Records after applying the current filter and search query."""
         records = self._all_records

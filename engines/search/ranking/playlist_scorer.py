@@ -147,28 +147,6 @@ class PlaylistScorer:
             breakdown=breakdown,
         )
 
-    def make_candidate_report(
-        self,
-        playlist: PlaylistSource,
-        qr: QualityResult,
-        status: str = "ACCEPT",
-    ) -> CandidateReport:
-        """Produce a CandidateReport for PlaylistDebugReporter."""
-        bd = qr.breakdown
-        return CandidateReport(
-            title=playlist.title,
-            url=playlist.url,
-            music_score=bd.get("music_score", 0.0),
-            artist_confidence=bd.get("artist_confidence", 0.0),
-            metadata_quality=bd.get("metadata_quality", 0.0),
-            size_score=bd.get("size_score", 0.0),
-            final_score=qr.score / 100.0,
-            status=status,
-            reject_reason=playlist.reject_reason,
-            music_signals_note=bd.get("music_note", ""),
-            artist_signals_note=bd.get("artist_reason", ""),
-        )
-
     # ------------------------------------------------------------------
     # Private helpers
     # ------------------------------------------------------------------

@@ -78,7 +78,7 @@ class HomeScreen(BaseScreen):
 
         self.error_label = QLabel("")
         self.error_label.setAlignment(Qt.AlignCenter)
-        self.error_label.setStyleSheet("color: #ff5555; font-weight: bold;")
+        self.error_label.setStyleSheet(f"color: {ThemeManager.get_color('danger')}; font-weight: bold;")
         self.error_label.hide()
         self.main_layout.addWidget(self.error_label)
 
@@ -119,6 +119,12 @@ class HomeScreen(BaseScreen):
         # Apply responsive widths
         self.search_pill.setFixedWidth(clamped_width)
         self.activity_stream.setFixedWidth(clamped_width)
+
+    def on_navigated(self, **kwargs):
+        """Called when navigating to this screen."""
+        self.error_label.hide()
+        # Ensure search is enabled on return
+        self.search_pill.set_enabled(True)
 
     def connect_signals(self):
         # UI -> ViewModel

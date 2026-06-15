@@ -1,4 +1,4 @@
-from engines.timestamp.parsers.timestamp_parser import parse_timestamps_from_text
+from engines.timestamp.parsers.timestamp_parser import TimestampParser
 from engines.timestamp.parsers.title_parser import extract_titles_from_text
 
 def extract_comment_timestamps(url: str) -> list[dict] | None:
@@ -34,7 +34,7 @@ def extract_comment_timestamps(url: str) -> list[dict] | None:
 
         for comment in comments[:30]:
             text = comment.get("text") or ""
-            entries = parse_timestamps_from_text(text)
+            entries = TimestampParser.parse_from_text(text)
             if len(entries) > best_count:
                 best_count = len(entries)
                 best_entries = entries

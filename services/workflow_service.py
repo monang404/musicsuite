@@ -4,7 +4,7 @@ from typing import Callable, Optional, Dict, Any, List, Tuple
 from services.downloader_service import DownloaderService
 from services.timestamp_service import TimestampService
 from services.splitter_service import SplitterService
-from engines.timestamp.parsers.text_parser import parse_timestamps
+from engines.timestamp.parsers.timestamp_parser import TimestampParser
 from engines.timestamp.models.track import Track
 
 class WorkflowService:
@@ -81,7 +81,7 @@ class WorkflowService:
             progress_callback("Parsing timestamps...")
             
         duration = info.get("duration", 0)
-        tracks = parse_timestamps(timestamp_text, audio_duration=duration)
+        tracks = TimestampParser.parse_formatted(timestamp_text, audio_duration=duration)
         
         if progress_callback:
             progress_callback("Splitting audio...")

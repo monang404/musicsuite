@@ -340,7 +340,8 @@ class ResultsCenterScreen(BaseScreen):
 
     def _on_error(self, message: str):
         self.lbl_stats.setText(f"⚠ {message}")
-        self.lbl_stats.setStyleSheet("color:#e74c3c; font-size:11px;")
+        from ui.themes.theme_manager import ThemeManager
+        self.lbl_stats.setStyleSheet(f"color: {ThemeManager.get_color('danger')}; font-size: 11px;")
 
     def _refresh_ui(self):
         if not self.viewmodel:

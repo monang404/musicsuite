@@ -1,5 +1,6 @@
 import pytest
-from engines.timestamp.parsers.text_parser import parse_timestamps, time_to_seconds, seconds_to_time
+from engines.timestamp.parsers.timestamp_parser import TimestampParser
+from engines.timestamp.utils import time_to_seconds, seconds_to_time
 
 def test_time_conversion():
     assert time_to_seconds("04:05") == 245
@@ -13,7 +14,7 @@ def test_parse_timestamps():
     03:15 | First Song
     07:30 | Second Song
     """
-    tracks = parse_timestamps(text, audio_duration=600)
+    tracks = TimestampParser.parse_formatted(text, audio_duration=600)
     
     assert len(tracks) == 3
     assert tracks[0].title == "Intro"

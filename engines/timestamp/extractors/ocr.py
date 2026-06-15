@@ -11,7 +11,7 @@ def extract_thumbnail_ocr_timestamps(thumbnail_url: str) -> str | None:
     except Exception:
         api_key = "helloworld"
 
-    print(f"[OCR] Menggunakan API Key: {api_key}")
+    print("[OCR] Menggunakan API Key: *****")
     try:
         import urllib.request
         import urllib.parse

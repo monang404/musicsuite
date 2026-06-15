@@ -43,6 +43,8 @@ class WorkflowService:
         if progress_callback:
             progress_callback("Fetching video info...")
         
+        output_dir = str(Path(output_dir).resolve())
+        
         if cancel_check and cancel_check():
             return []
             
@@ -119,6 +121,7 @@ class WorkflowService:
         """
         output_files = []
         total = len(entries)
+        output_dir = str(Path(output_dir).resolve())
         
         for i, entry in enumerate(entries, 1):
             if cancel_check and cancel_check():

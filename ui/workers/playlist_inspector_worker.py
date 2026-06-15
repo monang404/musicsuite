@@ -1,4 +1,5 @@
 from typing import Dict, List, Optional, Any
+import logging
 from ui.workers.base_worker import BaseWorker
 from ui.core.service_container import ServiceContainer
 from engines.search.models.playlist_source import PlaylistSource
@@ -91,5 +92,5 @@ class PlaylistInspectorWorker(BaseWorker):
             res = scorer.score_phase2(s)
             return res
         except Exception:
-            pass
+            logging.error("Failed to calculate confidence score", exc_info=True)
         return None

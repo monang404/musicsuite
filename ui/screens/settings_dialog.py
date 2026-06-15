@@ -1,4 +1,5 @@
 import os
+import logging
 from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QLabel, 
     QPushButton, QLineEdit, QFrame, QFileDialog, QWidget
@@ -204,7 +205,7 @@ class SettingsDialog(QDialog):
             try:
                 self._fade_anim.finished.disconnect(self._fade_anim_slot)
             except Exception:
-                pass
+                logging.error("Failed to disconnect fade animation", exc_info=True)
         self._fade_anim_slot = callback
         self._fade_anim.finished.connect(self._fade_anim_slot)
         self._fade_anim.start()

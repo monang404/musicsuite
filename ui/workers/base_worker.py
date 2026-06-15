@@ -1,5 +1,6 @@
 import subprocess
 import contextvars
+import logging
 from PySide6.QtCore import QThread, Signal
 from typing import Any
 
@@ -79,8 +80,8 @@ class BaseWorker(QThread):
             try:
                 if proc.poll() is None:
                     proc.terminate()
-            except Exception:
-                pass
+            except Exception as e:
+                logging.error(f"Failed to terminate process {proc.pid}", exc_info=True)
                 
         # 2. Wait up to 1 second in parallel for processes to shut down
         import time
@@ -95,8 +96,8 @@ class BaseWorker(QThread):
             try:
                 proc.kill()
                 proc.wait()
-            except Exception:
-                pass
+            except Exception as e:
+                logging.error(f"Failed to kill process {proc.pid}", exc_info=True)
         
     def cancel(self):
         """

@@ -46,6 +46,7 @@ class DownloaderService:
             Full path to the downloaded audio file
         """
         validate_url(url)
+        output_dir = str(Path(output_dir).resolve())
         return self._engine.download_audio(
             url=url,
             output_dir=output_dir,

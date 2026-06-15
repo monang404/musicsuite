@@ -1,4 +1,5 @@
 import concurrent.futures
+import logging
 from typing import List, Dict
 
 from engines.search.providers.ytdlp_provider import YtdlpProvider
@@ -68,7 +69,7 @@ class SearchEngineService:
                     top_candidates[idx] = full_s
                     quality_results[full_s.id] = scorer.score_phase2(full_s)
                 except Exception as e:
-                    pass
+                    logging.error("Failed to fetch full source in phase 2", exc_info=True)
 
         return self.rank_results(top_candidates, quality_results)
 
@@ -96,7 +97,7 @@ class SearchEngineService:
                     idx = top_candidates.index(original)
                     top_candidates[idx] = full
                 except Exception:
-                    pass
+                    logging.error("Failed to fetch full playlist in phase 2", exc_info=True)
 
         # re-apply filter (item_count < 3 and possible entry-level patterns)
         final_candidates = playlist_filter.apply(top_candidates)
